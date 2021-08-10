@@ -1,7 +1,11 @@
 import { useState } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useToken } from '../auth/useToken'
+import axios from 'axios'
 
 export const LogInPage = () => {
+  const [token, setToken] = useToken()
+
   const [errorMessage, setErrorMessage] = useState('')
   const [emailValue, setEmailValue] = useState('')
   const [passwordValue, setPasswordValue] = useState('')
@@ -9,7 +13,14 @@ export const LogInPage = () => {
   const history = useHistory()
 
   const onLogInClicked = async () => {
-    alert('Login not implemented yet')
+    const response = await axios.post('/api/login', {
+      email: emailValue,
+      password: passwordValue,
+    })
+
+    const { token } = response.data
+    setToken(token)
+    history.push('/')
   }
 
   return (
